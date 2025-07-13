@@ -1,5 +1,9 @@
+<?php
+include "calendar.php";
+?>
+
 <!DOCTYPE html>
-<html>
+<html lang="en" dir="ltr">
     <head>
         <meta charset="UTF-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -7,6 +11,8 @@
 
         <meta name="description" content="The smart calendar that keeps your life organized—your way">
     
+        <link href="https://fonts.googleapis.com/css2?family=GFS+Neohellenic:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
         <link rel="stylesheet" href="index.css"/>
     </head>
 
@@ -16,20 +22,26 @@
             <h1>Schedula<br></h1>
         </header>
 
+        <?php if ($successMsg): ?>
+            <div class="alert success"><?= $successMsg ?></div>
+        <?php elseif ($errorMsg): ?>
+            <div class="alert error"><?= $errorMsg ?></div>
+        <?php endif; ?>
+
         <!--clock-->
-        <div class="clock">
+        <div class="clock-container">
             <div id="clk"></div>
         </div>
 
         <!--calendar-->
         <div class="calendar">
-            <div class="btn-calendar">
-                <button class="nav-btn">
-                    <img id="botonPREV" src="./icons/PREV.png" onclick="" />
+            <div class="nav-btn-container">
+                <button onclick="changeMonth(-1)" class="nav-btn">
+                    <img id="botonPREV" src="./icons/PREV.png"/>
                 </button>
                 <h2 id="monthYear" style="margin: 0"></h2>
-                <button class="nav-btn">
-                    <img id="botonNEXT" src="./icons/NEXT.png" onclick="" />
+                <button onclick="changeMonth(1)" class="nav-btn">
+                    <img id="botonNEXT" src="./icons/NEXT.png"/>
                 </button>
             </div>
 
@@ -76,8 +88,8 @@
                     <label for="endTime">End Time:</label>
                     <input type="time" name="end_time" id="endTime" required>
 
-                    <label for="descriptionEvent">End Time:</label>
-                    <input type="descript" name="descript_event" id="descriptionEvent" required>
+                    <label for="descriptionEvent">Description:</label>
+                    <input type="text" name="descript_event" id="descriptionEvent" required>
 
                     <button type="submit">Save</button>
                 </form>
@@ -86,7 +98,9 @@
                 <form method="POST" onsubmit="return confirm('Are you sure you want to delete this appointment?')">
                     <input type="hidden" name="action" value="delete">
                     <input type="hidden" name="event_id" id="deleteEventId">
-                    <button type="submit" class="submit-btn">Delete</button>
+                    <button type="submit" class="submit-btn">
+                        <img id="botonDLT" src="./icons/DLT.png" onclick="" />
+                    </button>
                 </form>
 
                 <!--Cancel-->
@@ -94,7 +108,10 @@
             </div>
         </div>
 
-
+        <script>
+            const events = <?=json_encode($eventsFromDB, JSON_UNESCAPED_UNICODE)?>;
+        </script>
+        <script src="calendar.js"></script>
     </body>
 
 
